@@ -1,10 +1,7 @@
 services:
   kafka:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: lpd-basic-kafka:latest
-    container_name: lpd-basic-kafka
+    image: dawsonlp/kafka:latest
+    container_name: kafka
     ports:
       - "9092:9092"
       - "29092:29092"
@@ -28,7 +25,7 @@ services:
 
 volumes:
   kafka-data:
-    name: lpd-basic-kafka-data
+    name: kafka-data
 
 networks:
   kafka-network:
