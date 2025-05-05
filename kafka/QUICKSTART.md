@@ -5,7 +5,7 @@ This quickstart guide shows you how to use our pre-built multi-architecture Kafk
 ## Pull the image
 
 ```bash
-docker pull your-username/kafka:latest
+docker pull dawsonlp/kafka:latest
 ```
 
 The image automatically works on both ARM64 (e.g., Mac M-series) and AMD64 platforms.
@@ -19,7 +19,7 @@ Create a `docker-compose.yml` file:
 ```yaml
 services:
   kafka:
-    image: your-username/kafka:latest
+    image: dawsonlp/kafka:latest
     container_name: kafka
     ports:
       - "9092:9092"
@@ -46,7 +46,7 @@ Create a `docker-compose.yml` file:
 ```yaml
 services:
   kafka:
-    image: your-username/kafka:latest
+    image: dawsonlp/kafka:latest
     container_name: kafka
     ports:
       - "9092:9092"  # For host machine access
@@ -215,7 +215,7 @@ services:
   # Your existing services...
   
   kafka:
-    image: your-username/kafka:latest
+    image: dawsonlp/kafka:latest
     container_name: kafka
     ports:
       - "9092:9092"

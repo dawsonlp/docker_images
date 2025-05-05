@@ -105,7 +105,7 @@ To build and push the image for both arm64 and amd64 architectures in one comman
 
 ```bash
 docker buildx build --platform linux/amd64,linux/arm64 \
-  -t docker.io/your-username/kafka:latest \
+  -t docker.io/dawsonlp/kafka:latest \
   -f Dockerfile \
   --push .
 ```
@@ -133,7 +133,7 @@ When a client pulls the image:
 To verify that your image supports multiple architectures:
 
 ```bash
-docker manifest inspect your-username/kafka:latest
+docker manifest inspect dawsonlp/kafka:latest
 ```
 
 This will show all the platforms supported by the image.
@@ -142,7 +142,7 @@ This will show all the platforms supported by the image.
 
 Pull the image from the registry:
 ```bash
-docker pull your-username/kafka:latest
+docker pull dawsonlp/kafka:latest
 ```
 
 Run with Docker Compose:
@@ -154,7 +154,7 @@ To use the image from the registry in your Docker Compose file, update the `imag
 ```yaml
 services:
   kafka:
-    image: your-username/kafka:latest
+    image: dawsonlp/kafka:latest
     # other configuration...
 ```
 
