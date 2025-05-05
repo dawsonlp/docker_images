@@ -1,4 +1,4 @@
-# lpd-basic-kafka
+# kafka
 
 A pre-configured Apache Kafka container with multi-listener setup for development and testing. This image runs Kafka 4.0.0+ with KRaft mode (no ZooKeeper required).
 
@@ -18,7 +18,7 @@ A pre-configured Apache Kafka container with multi-listener setup for developmen
 
 ```bash
 # Pull the image
-docker pull dawsonlp/lpd-basic-kafka:latest
+docker pull dawsonlp/kafka:latest
 
 # Start with Docker Compose
 docker compose up -d
@@ -53,4 +53,4 @@ networks:
 
 ## Full Documentation
 
-For complete documentation, including Docker Compose examples, Python code samples, and local Kafka tools setup, visit the [GitHub repository](https://github.com/dawsonlp/all/tree/dev/containers/kafka).
+For complete documentation, including Docker Compose examples, Python code samples, and local Kafka tools setup, visit the [GitHub repository](https://github.com/dawsonlp/docker_images).
