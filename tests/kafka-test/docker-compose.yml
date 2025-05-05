@@ -1,0 +1,21 @@
+services:
+  # Python test client for producing and consuming messages
+  test-client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kafka-test-client
+    volumes:
+      - ./:/tests  # Mount test scripts
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:29092  # Connect to the main Kafka instance via internal listener
+    networks:
+      - kafka-network
+    tty: true      # Keep container running
+    stdin_open: true
+    entrypoint: ["bash"]
+
+networks:
+  kafka-network:
+    name: kafka-network
+    external: true
