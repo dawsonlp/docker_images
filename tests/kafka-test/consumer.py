@@ -35,6 +35,17 @@ def signal_handler(sig, frame):
     print("Interrupt received, stopping consumer...")
     running = False
 
+def safe_json_deserialize(v):
+    if v is None:
+        return None
+    try:
+        return json.loads(v.decode('utf-8'))
+    except json.JSONDecodeError as e:
+        print(f"Warning: Error deserializing message: {str(e)}")
+        print(f"Raw message: {v!r}")
+        # Return a placeholder to allow processing to continue
+        return {"warning": "non-json-data", "raw": str(v)}
+
 def create_consumer(args):
     print(f"Creating consumer connecting to {args.bootstrap_server}...")
     auto_offset_reset = 'earliest' if args.from_beginning else 'latest'
@@ -45,7 +56,7 @@ def create_consumer(args):
             bootstrap_servers=[args.bootstrap_server],
             group_id=args.group,
             auto_offset_reset=auto_offset_reset,
-            value_deserializer=lambda v: json.loads(v.decode('utf-8')),
+            value_deserializer=safe_json_deserialize,
             key_deserializer=lambda v: v.decode('utf-8') if v else None,
             consumer_timeout_ms=args.timeout
         )
