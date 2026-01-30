@@ -1,0 +1,32 @@
+# Smoke test Docker Compose for PostgreSQL Batteries-Included
+# Usage: docker compose up -d
+
+services:
+  postgres:
+    image: dawsonlp/postgres-batteries-inc:latest
+    pull_policy: always  # Always pull latest from registry
+    container_name: postgres-smoke-test
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      POSTGRES_DB: ${POSTGRES_DB:-testdb}
+    volumes:
+      - postgres-smoke-data:/var/lib/postgresql
+    networks:
+      - postgres-smoke-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d testdb"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  postgres-smoke-data:
+    name: postgres-smoke-data
+
+networks:
+  postgres-smoke-network:
+    name: postgres-smoke-network

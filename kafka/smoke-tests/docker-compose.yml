@@ -1,0 +1,33 @@
+# Smoke test Docker Compose for Kafka 4.2.0-rc2
+# Usage: docker compose up -d
+
+services:
+  kafka:
+    image: dawsonlp/kafka:4.2.0-rc2
+    pull_policy: always  # Always pull latest from registry
+    container_name: kafka-smoke-test
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    volumes:
+      - kafka-smoke-data:/var/lib/kafka/data
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_NUM_PARTITIONS: "3"
+    networks:
+      - kafka-smoke-network
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  kafka-smoke-data:
+    name: kafka-smoke-data
+
+networks:
+  kafka-smoke-network:
+    name: kafka-smoke-network
