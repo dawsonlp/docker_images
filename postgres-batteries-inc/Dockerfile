@@ -14,7 +14,7 @@ FROM postgres:${PG_MAJOR}
 ARG PG_MAJOR
 
 LABEL org.opencontainers.image.title="PostgreSQL Batteries-Included" \
-      org.opencontainers.image.description="PostgreSQL with PostGIS, pgvector, pgrouting, and essential extensions" \
+      org.opencontainers.image.description="PostgreSQL with PostGIS, pgvector, Apache AGE, pgrouting, and essential extensions" \
       org.opencontainers.image.version="${PG_MAJOR}" \
       org.opencontainers.image.authors="dawsonlp" \
       org.opencontainers.image.vendor="dawsonlp" \
@@ -22,6 +22,7 @@ LABEL org.opencontainers.image.title="PostgreSQL Batteries-Included" \
 
 # Extension versions
 ENV POSTGIS_VERSION=3
+ENV AGE_VERSION=PG18/v1.7.0-rc0
 
 # Install all extensions from packages
 RUN set -eux; \
@@ -42,6 +43,34 @@ RUN set -eux; \
         unzip \
         ca-certificates \
         gdal-bin \
+    ; \
+    apt-get clean; \
+    rm -rf /var/lib/apt/lists/*;
+
+# Build and install Apache AGE from source
+# AGE requires source compilation (no apt package for PG18)
+# flex and bison are needed for the Cypher parser
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        postgresql-server-dev-${PG_MAJOR} \
+        flex \
+        bison \
+        git \
+    ; \
+    git clone --branch ${AGE_VERSION} --single-branch --depth 1 \
+        https://github.com/apache/age.git /tmp/age; \
+    cd /tmp/age; \
+    make PG_CONFIG=/usr/lib/postgresql/${PG_MAJOR}/bin/pg_config install; \
+    cd /; \
+    rm -rf /tmp/age; \
+    apt-get purge -y --auto-remove \
+        build-essential \
+        postgresql-server-dev-${PG_MAJOR} \
+        flex \
+        bison \
+        git \
     ; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*;
@@ -74,4 +103,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
 
 # Use the default postgres entrypoint
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["postgres"]
+CMD ["postgres", "-c", "shared_preload_libraries=age"]

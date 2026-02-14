@@ -23,6 +23,10 @@ CREATE EXTENSION IF NOT EXISTS pgrouting;
 \echo 'Creating pgvector extension...'
 CREATE EXTENSION IF NOT EXISTS vector;
 
+-- ===== GRAPH EXTENSIONS =====
+\echo 'Creating Apache AGE extension (graph database)...'
+CREATE EXTENSION IF NOT EXISTS age;
+
 -- ===== FULL-TEXT SEARCH EXTENSIONS =====
 \echo 'Creating fuzzystrmatch extension...'
 CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
@@ -71,6 +75,10 @@ CREATE EXTENSION IF NOT EXISTS btree_gist;
 \echo 'Creating pg_stat_statements extension...'
 CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
 
+-- ===== CONFIGURE SEARCH PATH =====
+\echo 'Setting search path to include ag_catalog and tiger schemas...'
+SELECT format('ALTER DATABASE %I SET search_path TO ag_catalog, "$user", public, tiger, tiger_data;', current_database()) \gexec
+
 -- ===== VERIFY INSTALLATION =====
 \echo ''
 \echo '=========================================='
@@ -90,6 +98,10 @@ SELECT pgr_version();
 \echo ''
 \echo 'pgvector Version:'
 SELECT extversion FROM pg_extension WHERE extname = 'vector';
+
+\echo ''
+\echo 'Apache AGE Version:'
+SELECT extversion FROM pg_extension WHERE extname = 'age';
 
 -- ===== SAMPLE TABLES =====
 \echo ''
@@ -176,6 +188,11 @@ COMMENT ON TABLE sample_roads IS 'Sample table for graph routing with pgRouting'
 CREATE INDEX IF NOT EXISTS sample_roads_geom_idx
     ON sample_roads USING GIST (geom);
 
+-- Graph sample (Apache AGE)
+\echo 'Creating sample graph...'
+SET search_path = ag_catalog, "$user", public;
+SELECT create_graph('sample_graph');
+
 \echo ''
 \echo '=========================================='
 \echo 'Database initialization completed!'
@@ -186,4 +203,5 @@ CREATE INDEX IF NOT EXISTS sample_roads_geom_idx
 \echo '  - Spatial query: SELECT * FROM sample_locations WHERE ST_DWithin(point, ST_MakePoint(lon, lat)::geography, 1000);'
 \echo '  - Full-text search: SELECT * FROM sample_documents WHERE search_vector @@ plainto_tsquery(''search terms'');'
 \echo '  - Routing: SELECT * FROM pgr_dijkstra(''SELECT id, source, target, cost FROM sample_roads'', start_id, end_id);'
+\echo '  - Graph (Cypher): SELECT * FROM cypher(''sample_graph'', $$ MATCH (n) RETURN n $$) AS (result agtype);'
 \echo ''

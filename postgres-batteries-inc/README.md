@@ -2,7 +2,7 @@
 
 [![Docker Hub](https://img.shields.io/badge/docker-dawsonlp%2Fpostgres--batteries--inc-blue)](https://hub.docker.com/r/dawsonlp/postgres-batteries-inc)
 
-PostgreSQL 18 with PostGIS, pgvector, pgRouting, and 15+ essential extensions pre-installed.
+PostgreSQL 18 with PostGIS, pgvector, Apache AGE, pgRouting, and 15+ essential extensions pre-installed.
 
 ## Quick Start
 
@@ -44,6 +44,11 @@ docker compose up -d
 | Extension | Description |
 |-----------|-------------|
 | **pgvector** | Vector similarity search for AI embeddings |
+
+### Graph Database
+| Extension | Description |
+|-----------|-------------|
+| **Apache AGE** | Graph database with openCypher query language |
 
 ### Full-Text Search
 | Extension | Description |
@@ -131,6 +136,25 @@ SELECT * FROM pgr_dijkstra(
 );
 ```
 
+### Graph Database (Apache AGE / Cypher)
+
+```sql
+-- Create a graph
+SELECT create_graph('my_graph');
+
+-- Create nodes and relationships
+SELECT * FROM cypher('my_graph', $$
+    CREATE (a:Person {name: 'Alice'})-[:KNOWS]->(b:Person {name: 'Bob'})
+    RETURN a, b
+$$) AS (a agtype, b agtype);
+
+-- Query the graph
+SELECT * FROM cypher('my_graph', $$
+    MATCH (a:Person)-[:KNOWS]->(b:Person)
+    RETURN a.name, b.name
+$$) AS (from_name agtype, to_name agtype);
+```
+
 ### Fuzzy Matching
 
 ```sql
@@ -148,6 +172,7 @@ The image creates sample tables for demonstration:
 - `sample_locations` - Spatial data with GiST indexes
 - `sample_documents` - Full-text search with weighted fields
 - `sample_roads` - Graph network for routing
+- `sample_graph` - Apache AGE graph (query with Cypher)
 
 ## TIGER Geocoder
 

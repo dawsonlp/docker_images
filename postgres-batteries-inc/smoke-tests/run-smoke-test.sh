@@ -132,6 +132,37 @@ echo "----------------------------------------"
 run_sql "SELECT * FROM tiger.loader_platform LIMIT 1;" || echo "  (TIGER tables exist but need data loading)"
 echo "✓ TIGER Geocoder extension installed"
 
+# Step 10: Test Apache AGE (graph database)
+echo ""
+echo "Step 10: Testing Apache AGE (graph database)..."
+echo "----------------------------------------"
+
+# T1: Extension loads
+run_sql "SELECT extname, extversion FROM pg_extension WHERE extname = 'age';"
+echo "✓ AGE extension loaded"
+
+# T2: Graph creation (need ag_catalog in search_path for AGE functions)
+run_sql "SET search_path = ag_catalog, public; SELECT create_graph('smoke_test_graph');"
+echo "✓ Graph creation works"
+
+# T3: Cypher queries (create and read vertex)
+run_sql "SET search_path = ag_catalog, public; SELECT * FROM cypher('smoke_test_graph', \$\$ CREATE (n:Person {name: 'Smoke Test'}) RETURN n \$\$) AS (result agtype);"
+run_sql "SET search_path = ag_catalog, public; SELECT * FROM cypher('smoke_test_graph', \$\$ MATCH (n:Person) RETURN n \$\$) AS (result agtype);"
+echo "✓ Cypher queries work"
+
+# T4: Co-existence with pgvector in same database
+run_sql "CREATE TABLE age_pgvector_coexist_test (id SERIAL PRIMARY KEY, embedding vector(3));"
+run_sql "INSERT INTO age_pgvector_coexist_test (embedding) VALUES ('[1,2,3]');"
+run_sql "SELECT * FROM age_pgvector_coexist_test;"
+run_sql "DROP TABLE age_pgvector_coexist_test;"
+echo "✓ AGE and pgvector co-exist"
+
+# Cleanup test graph
+run_sql "SET search_path = ag_catalog, public; SELECT drop_graph('smoke_test_graph', true);"
+echo "✓ Graph cleanup works"
+
+echo "✓ Apache AGE working"
+
 # Summary
 echo ""
 echo "=========================================="
@@ -144,6 +175,7 @@ echo "  ✓ PostGIS Topology"
 echo "  ✓ PostGIS TIGER Geocoder"
 echo "  ✓ pgvector (vector similarity)"
 echo "  ✓ pgRouting (graph algorithms)"
+echo "  ✓ Apache AGE (graph database / Cypher)"
 echo "  ✓ pg_trgm (trigram similarity)"
 echo "  ✓ fuzzystrmatch (fuzzy matching)"
 echo "  ✓ unaccent (text normalization)"
