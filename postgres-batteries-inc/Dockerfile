@@ -5,17 +5,20 @@
 #
 # Tags:
 #   dawsonlp/postgres-batteries-inc:latest - Latest stable PostgreSQL 18
-#   dawsonlp/postgres-batteries-inc:18     - PostgreSQL 18
+#   dawsonlp/postgres-batteries-inc:18.4   - PostgreSQL 18.4
+#   dawsonlp/postgres-batteries-inc:18     - PostgreSQL 18 major line
 
+ARG PG_VERSION=18.4
 ARG PG_MAJOR=18
-FROM postgres:${PG_MAJOR}
+FROM postgres:${PG_VERSION}
 
 # Re-declare ARG after FROM for use in labels
+ARG PG_VERSION
 ARG PG_MAJOR
 
 LABEL org.opencontainers.image.title="PostgreSQL Batteries-Included" \
       org.opencontainers.image.description="PostgreSQL with PostGIS, pgvector, Apache AGE, pgrouting, and essential extensions" \
-      org.opencontainers.image.version="${PG_MAJOR}" \
+      org.opencontainers.image.version="${PG_VERSION}" \
       org.opencontainers.image.authors="dawsonlp" \
       org.opencontainers.image.vendor="dawsonlp" \
       org.opencontainers.image.source="https://github.com/dawsonlp/docker_images"

@@ -2,7 +2,7 @@
 
 [![Docker Hub](https://img.shields.io/badge/docker-dawsonlp%2Fpostgres--batteries--inc-blue)](https://hub.docker.com/r/dawsonlp/postgres-batteries-inc)
 
-PostgreSQL 18 with PostGIS, pgvector, Apache AGE, pgRouting, and 15+ essential extensions pre-installed.
+PostgreSQL 18.4 with PostGIS, pgvector, Apache AGE, pgRouting, and 15+ essential extensions pre-installed.
 
 ## Quick Start
 
@@ -28,7 +28,7 @@ docker compose up -d
 
 | Tag | PostgreSQL | Description |
 |-----|------------|-------------|
-| `latest`, `18` | 18 | Latest stable |
+| `latest`, `18.4`, `18` | 18.4 | Latest stable |
 
 ## Included Extensions
 

@@ -10,11 +10,12 @@ set -e
 # Configuration
 REGISTRY="docker.io/dawsonlp"
 IMAGE_NAME="postgres-batteries-inc"
-BUILDER="cloud-dawsonlp-arm64"
-PLATFORMS="linux/amd64,linux/arm64"
+BUILDER="${BUILDER:-cloud-dawsonlp-arm64}"
+PLATFORMS="${PLATFORMS:-linux/amd64,linux/arm64}"
 
-# Version - PostgreSQL major version
-PG_VERSION="18"
+# Version - PostgreSQL stable release and matching major line
+PG_VERSION="18.4"
+PG_MAJOR="${PG_VERSION%%.*}"
 
 # Parse arguments
 LOCAL_ONLY=false
@@ -40,18 +41,19 @@ echo "=========================================="
 echo "Registry: $REGISTRY"
 echo "Image: $IMAGE_NAME"
 echo "PostgreSQL Version: $PG_VERSION"
+echo "PostgreSQL Major: $PG_MAJOR"
 echo "Platforms: $PLATFORMS"
 echo "Local only: $LOCAL_ONLY"
 echo ""
 
-TAGS="${REGISTRY}/${IMAGE_NAME}:latest -t ${REGISTRY}/${IMAGE_NAME}:${PG_VERSION}"
-
 if [ "$LOCAL_ONLY" = true ]; then
     echo "Building locally (single architecture)..."
     docker build \
-        --build-arg PG_MAJOR="$PG_VERSION" \
+        --build-arg PG_VERSION="$PG_VERSION" \
+        --build-arg PG_MAJOR="$PG_MAJOR" \
         -t "${REGISTRY}/${IMAGE_NAME}:latest" \
         -t "${REGISTRY}/${IMAGE_NAME}:${PG_VERSION}" \
+        -t "${REGISTRY}/${IMAGE_NAME}:${PG_MAJOR}" \
         .
 else
     echo "Building multi-arch and pushing to registry..."
@@ -59,9 +61,11 @@ else
     docker buildx build \
         --builder "$BUILDER" \
         --platform "$PLATFORMS" \
-        --build-arg PG_MAJOR="$PG_VERSION" \
+        --build-arg PG_VERSION="$PG_VERSION" \
+        --build-arg PG_MAJOR="$PG_MAJOR" \
         -t "${REGISTRY}/${IMAGE_NAME}:latest" \
         -t "${REGISTRY}/${IMAGE_NAME}:${PG_VERSION}" \
+        -t "${REGISTRY}/${IMAGE_NAME}:${PG_MAJOR}" \
         --push \
         .
 fi
@@ -77,4 +81,5 @@ if [ "$LOCAL_ONLY" = true ]; then
 else
     echo "  ${REGISTRY}/${IMAGE_NAME}:latest  (PostgreSQL $PG_VERSION)"
     echo "  ${REGISTRY}/${IMAGE_NAME}:${PG_VERSION}"
+    echo "  ${REGISTRY}/${IMAGE_NAME}:${PG_MAJOR}"
 fi

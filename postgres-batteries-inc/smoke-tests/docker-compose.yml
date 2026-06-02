@@ -3,8 +3,8 @@
 
 services:
   postgres:
-    image: dawsonlp/postgres-batteries-inc:latest
-    pull_policy: always  # Always pull latest from registry
+    image: ${POSTGRES_IMAGE:-dawsonlp/postgres-batteries-inc:latest}
+    pull_policy: ${PULL_POLICY:-always}  # Pull by default; set PULL_POLICY=never for local candidate tests
     container_name: postgres-smoke-test
     ports:
       - "5432:5432"
