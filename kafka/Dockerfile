@@ -2,14 +2,13 @@
 # Multi-architecture support (arm64 + amd64)
 #
 # Build args:
-#   KAFKA_VERSION - Apache Kafka version (default: 4.1.1)
+#   KAFKA_VERSION - Apache Kafka version (default: 4.3.0)
 #
 # Tags:
-#   dawsonlp/kafka:latest    - Stable release (4.1.1)
-#   dawsonlp/kafka:4.1.1     - Specific stable version
-#   dawsonlp/kafka:4.2.0-rc2 - Release candidate
+#   dawsonlp/kafka:latest    - Stable release (4.3.0)
+#   dawsonlp/kafka:4.3.0     - Specific stable version
 
-ARG KAFKA_VERSION=4.1.1
+ARG KAFKA_VERSION=4.3.0
 FROM apache/kafka:${KAFKA_VERSION}
 
 # Re-declare ARG after FROM to use in LABEL
