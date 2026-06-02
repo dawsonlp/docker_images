@@ -1,0 +1,7 @@
+{
+  "fontFamily": "DejaVu Sans Mono, monospace",
+  "fontSize": 13,
+  "lineHeight": 1.2,
+  "pasteWithCtrlV": true,
+  "theme": "dark"
+}

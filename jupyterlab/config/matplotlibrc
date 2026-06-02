@@ -1,0 +1,5 @@
+figure.dpi: 120
+savefig.dpi: 160
+axes.grid: True
+grid.alpha: 0.25
+font.family: DejaVu Sans

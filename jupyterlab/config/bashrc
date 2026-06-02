@@ -1,0 +1,14 @@
+export SHELL=/bin/bash
+export TERM="${TERM:-xterm-256color}"
+export PYTHONUNBUFFERED=1
+export PYTHONDONTWRITEBYTECODE=1
+
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+
+cd /notebooks 2>/dev/null || true
