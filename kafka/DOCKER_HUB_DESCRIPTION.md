@@ -1,6 +1,6 @@
 # kafka
 
-A pre-configured Apache Kafka container with multi-listener setup for development and testing. This image runs Kafka 4.3.1 with KRaft mode (no ZooKeeper required).
+A pre-configured Apache Kafka container with multi-listener setup for development and testing. This image runs Kafka 4.3.1 with KRaft mode (no ZooKeeper required). Share Groups (Queues, KIP-932) are generally available.
 
 ## Features
 

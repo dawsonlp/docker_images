@@ -83,6 +83,22 @@ services:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
 ```
 
+## Share Groups (Queues)
+
+Share groups (KIP-932, generally available since Kafka 4.2.0) enable queue-style consumption where messages are distributed across consumers without partition assignment.
+
+### Consumer-Side Configuration
+
+When using share group consumers, set `share.acquire.mode=record_limit` to enforce strict `max.poll.records` limits. This is not the default but [should be](https://www.linkedin.com/pulse/introducing-kafka-420-stanislav-kozlovski-giivf/) for predictable behavior:
+
+```properties
+share.acquire.mode=record_limit
+```
+
+### Broker-Side Configuration
+
+The broker controls how long a record stays locked before reclaim via `group.share.record.lock.duration.ms` (default 30s). This image sets it explicitly. Consumers processing long-running records should use the RENEW acknowledgement type (KIP-1222) rather than increasing this value.
+
 ## Common Operations
 
 ```bash
