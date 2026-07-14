@@ -7,7 +7,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
-IMAGE_TAG="${IMAGE_TAG:-4.3.0}"
+IMAGE_TAG="${IMAGE_TAG:-4.3.1}"
 export KAFKA_IMAGE="${KAFKA_IMAGE:-dawsonlp/kafka:$IMAGE_TAG}"
 TOPIC="smoke-test-topic"
 MESSAGE_COUNT=5

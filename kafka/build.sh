@@ -4,10 +4,10 @@
 # Usage:
 #   ./build.sh              # Build and push all versions
 #   ./build.sh --local      # Build locally only (no push)
-#   ./build.sh 4.3.0        # Build specific version only
+#   ./build.sh 4.3.1        # Build specific version only
 #
 # Versions:
-#   4.3.0     - Stable release (tagged as :latest and :4.3.0)
+#   4.3.1     - Stable release (tagged as :latest and :4.3.1)
 
 set -e
 
@@ -18,7 +18,7 @@ BUILDER="${BUILDER:-cloud-dawsonlp-arm64}"
 PLATFORMS="${PLATFORMS:-linux/amd64,linux/arm64}"
 
 # Version definitions
-STABLE_VERSION="4.3.0"
+STABLE_VERSION="4.3.1"
 
 # Parse arguments
 LOCAL_ONLY=false

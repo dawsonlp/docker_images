@@ -2,13 +2,13 @@
 # Multi-architecture support (arm64 + amd64)
 #
 # Build args:
-#   KAFKA_VERSION - Apache Kafka version (default: 4.3.0)
+#   KAFKA_VERSION - Apache Kafka version (default: 4.3.1)
 #
 # Tags:
-#   dawsonlp/kafka:latest    - Stable release (4.3.0)
-#   dawsonlp/kafka:4.3.0     - Specific stable version
+#   dawsonlp/kafka:latest    - Stable release (4.3.1)
+#   dawsonlp/kafka:4.3.1     - Specific stable version
 
-ARG KAFKA_VERSION=4.3.0
+ARG KAFKA_VERSION=4.3.1
 FROM apache/kafka:${KAFKA_VERSION}
 
 # Re-declare ARG after FROM to use in LABEL
@@ -36,7 +36,8 @@ ENV KAFKA_NODE_ID=1 \
     KAFKA_AUTO_CREATE_TOPICS_ENABLE=true \
     KAFKA_DELETE_TOPIC_ENABLE=true \
     KAFKA_LOG_RETENTION_HOURS=168 \
-    KAFKA_LOG_SEGMENT_BYTES=1073741824
+    KAFKA_LOG_SEGMENT_BYTES=1073741824 \
+    KAFKA_GROUP_SHARE_RECORD_LOCK_DURATION_MS=30000
 
 # Install debugging utilities as root
 USER root

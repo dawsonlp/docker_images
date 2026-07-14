@@ -1,9 +1,9 @@
-# Smoke test Docker Compose for Kafka 4.3.0
+# Smoke test Docker Compose for Kafka 4.3.1
 # Usage: docker compose up -d
 
 services:
   kafka:
-    image: ${KAFKA_IMAGE:-dawsonlp/kafka:4.3.0}
+    image: ${KAFKA_IMAGE:-dawsonlp/kafka:4.3.1}
     pull_policy: ${PULL_POLICY:-always}  # Pull by default; set PULL_POLICY=never for local candidate tests
     container_name: kafka-smoke-test
     ports:

@@ -161,10 +161,10 @@ The Kafka tools will be available in your PATH.
 sudo apt update
 sudo apt install default-jre
 
-# Download Kafka 4.3.0
-wget https://downloads.apache.org/kafka/4.3.0/kafka_2.13-4.3.0.tgz
-tar -xzf kafka_2.13-4.3.0.tgz
-cd kafka_2.13-4.3.0
+# Download Kafka 4.3.1
+wget https://downloads.apache.org/kafka/4.3.1/kafka_2.13-4.3.1.tgz
+tar -xzf kafka_2.13-4.3.1.tgz
+cd kafka_2.13-4.3.1
 
 # Use the tools directly from the bin directory
 bin/kafka-topics.sh --version
@@ -175,7 +175,7 @@ You may want to add Kafka's bin directory to your PATH.
 ### Windows
 
 1. Install Java JRE from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://adoptium.net/)
-2. Download Kafka 4.3.0 from [Apache Kafka downloads](https://kafka.apache.org/downloads)
+2. Download Kafka 4.3.1 from [Apache Kafka downloads](https://kafka.apache.org/downloads)
 3. Extract the downloaded file to a directory like `C:\kafka`
 4. Use the tools from the `bin\windows` directory:
 

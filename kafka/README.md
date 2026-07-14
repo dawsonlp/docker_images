@@ -24,7 +24,7 @@ docker compose up -d
 
 | Tag | Kafka Version | Description |
 |-----|---------------|-------------|
-| `latest`, `4.3.0` | 4.3.0 | Stable release |
+| `latest`, `4.3.1` | 4.3.1 | Stable release |
 
 ## Features
 
@@ -129,7 +129,7 @@ docker inspect --format='{{.State.Health.Status}}' kafka
 ./build.sh --local
 
 # Build specific version
-./build.sh 4.3.0
+./build.sh 4.3.1
 ```
 
 ## Smoke Tests
