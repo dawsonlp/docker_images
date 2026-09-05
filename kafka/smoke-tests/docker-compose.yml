@@ -7,8 +7,8 @@ services:
     pull_policy: ${PULL_POLICY:-always}  # Pull by default; set PULL_POLICY=never for local candidate tests
     container_name: kafka-smoke-test
     ports:
-      - "9092:9092"
-      - "29092:29092"
+      - "${KAFKA_PORT:-9092}:9092"
+      - "${KAFKA_INTERNAL_PORT:-29093}:29092"
     volumes:
       - kafka-smoke-data:/var/lib/kafka/data
     environment:
