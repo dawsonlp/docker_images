@@ -1,6 +1,6 @@
 # PostgreSQL PostGIS Quick Start
 
-Get up and running with PostgreSQL 18.4, PostGIS, and pgvector in minutes.
+Get up and running with PostgreSQL 18.6, PostGIS, and pgvector in minutes.
 
 ## ⚠️ Security First
 

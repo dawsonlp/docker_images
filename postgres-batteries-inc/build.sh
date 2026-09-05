@@ -4,6 +4,7 @@
 # Usage:
 #   ./build.sh              # Build and push
 #   ./build.sh --local      # Build locally only (no push)
+#   ./build.sh --no-cache   # Build from scratch without cache
 
 set -e
 
@@ -14,11 +15,12 @@ BUILDER="${BUILDER:-cloud-dawsonlp-arm64}"
 PLATFORMS="${PLATFORMS:-linux/amd64,linux/arm64}"
 
 # Version - PostgreSQL stable release and matching major line
-PG_VERSION="18.4"
+PG_VERSION="18.6"
 PG_MAJOR="${PG_VERSION%%.*}"
 
 # Parse arguments
 LOCAL_ONLY=false
+NO_CACHE=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -26,11 +28,20 @@ while [[ $# -gt 0 ]]; do
             LOCAL_ONLY=true
             shift
             ;;
+        --no-cache)
+            NO_CACHE=true
+            shift
+            ;;
         *)
             shift
             ;;
     esac
 done
+
+EXTRA_ARGS=()
+if [ "$NO_CACHE" = true ]; then
+    EXTRA_ARGS+=(--no-cache --pull)
+fi
 
 # Main build logic
 cd "$(dirname "$0")"
@@ -44,11 +55,13 @@ echo "PostgreSQL Version: $PG_VERSION"
 echo "PostgreSQL Major: $PG_MAJOR"
 echo "Platforms: $PLATFORMS"
 echo "Local only: $LOCAL_ONLY"
+echo "No cache: $NO_CACHE"
 echo ""
 
 if [ "$LOCAL_ONLY" = true ]; then
     echo "Building locally (single architecture)..."
     docker build \
+        "${EXTRA_ARGS[@]}" \
         --build-arg PG_VERSION="$PG_VERSION" \
         --build-arg PG_MAJOR="$PG_MAJOR" \
         -t "${REGISTRY}/${IMAGE_NAME}:latest" \
@@ -61,6 +74,7 @@ else
     docker buildx build \
         --builder "$BUILDER" \
         --platform "$PLATFORMS" \
+        "${EXTRA_ARGS[@]}" \
         --build-arg PG_VERSION="$PG_VERSION" \
         --build-arg PG_MAJOR="$PG_MAJOR" \
         -t "${REGISTRY}/${IMAGE_NAME}:latest" \

@@ -20,8 +20,8 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
     GRANT USAGE ON SCHEMA tiger_data TO PUBLIC;
     GRANT SELECT ON ALL TABLES IN SCHEMA tiger_data TO PUBLIC;
 
-    -- Set search path to include tiger schemas
-    ALTER DATABASE "$POSTGRES_DB" SET search_path TO public, tiger, tiger_data;
+    -- Set search path to include tiger and ag_catalog schemas
+    ALTER DATABASE "$POSTGRES_DB" SET search_path TO ag_catalog, "$user", public, tiger, tiger_data;
 
     -- Create helper functions for geocoding
     CREATE OR REPLACE FUNCTION geocode_address(

@@ -5,10 +5,10 @@
 #
 # Tags:
 #   dawsonlp/postgres-batteries-inc:latest - Latest stable PostgreSQL 18
-#   dawsonlp/postgres-batteries-inc:18.4   - PostgreSQL 18.4
+#   dawsonlp/postgres-batteries-inc:18.6   - PostgreSQL 18.6
 #   dawsonlp/postgres-batteries-inc:18     - PostgreSQL 18 major line
 
-ARG PG_VERSION=18.4
+ARG PG_VERSION=18.6
 ARG PG_MAJOR=18
 FROM postgres:${PG_VERSION}
 
@@ -25,7 +25,7 @@ LABEL org.opencontainers.image.title="PostgreSQL Batteries-Included" \
 
 # Extension versions
 ENV POSTGIS_VERSION=3
-ENV AGE_VERSION=PG18/v1.7.0-rc0
+ENV AGE_VERSION=PG18/v1.8.0-rc0
 
 # Install all extensions from packages
 RUN set -eux; \
