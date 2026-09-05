@@ -8,7 +8,7 @@
 #   dawsonlp/jupyterlab:3.14   - Python 3.14 specific
 
 ARG PYTHON_VERSION=3.14
-ARG UV_VERSION=0.11.16
+ARG UV_VERSION=0.12.8
 
 FROM ghcr.io/astral-sh/uv:${UV_VERSION} AS uv
 
@@ -20,8 +20,8 @@ LABEL org.opencontainers.image.title="JupyterLab Data Science" \
       org.opencontainers.image.description="JupyterLab with data science, ML, LangChain, and database tools" \
       org.opencontainers.image.authors="dawsonlp" \
       org.opencontainers.image.source="https://github.com/dawsonlp/docker_images" \
-      org.opencontainers.image.version="${PYTHON_VERSION}-20260602" \
-      org.opencontainers.image.created="2026-06-02T00:00:00Z"
+      org.opencontainers.image.version="${PYTHON_VERSION}-20260905" \
+      org.opencontainers.image.created="2026-09-05T00:00:00Z"
 
 COPY --from=uv /uv /uvx /bin/
 
